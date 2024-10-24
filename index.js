@@ -3,10 +3,8 @@ const { Telegraf, Markup } = require('telegraf');
 const LocalSession = require('telegraf-session-local');
 require('dotenv').config(); // dotenv kutubxonasini chaqiramiz
 
-// Bot tokenini muhit o'zgaruvchisidan olish
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// Sessiya o'rnatish (JSON faylda saqlash uchun)
 const localSession = new LocalSession({
     database: 'sessions.json',
 });
@@ -17,6 +15,8 @@ const port = process.env.PORT || 3000;
 app.get('/', (req, res) => {
     res.send('Bot is running...');
 });
+
+bot.telegram.setWebhook(`https://china-shop-back.onrender.com`);
 
 app.listen(port, function () {
     bot.launch();
