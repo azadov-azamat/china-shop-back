@@ -1,3 +1,4 @@
+const express = require('express');
 const { Telegraf, Markup } = require('telegraf');
 const LocalSession = require('telegraf-session-local');
 require('dotenv').config(); // dotenv kutubxonasini chaqiramiz
@@ -9,6 +10,20 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const localSession = new LocalSession({
     database: 'sessions.json',
 });
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.send('Bot is running...');
+});
+
+app.listen(port, function () {
+    bot.launch();
+    console.log('Express server listening on port ' + port);
+});
+
+app.on('error', onError);
 
 // Sessiyalar bilan ishlash
 bot.use(localSession.middleware());
@@ -138,3 +153,42 @@ function goBack(ctx) {
 
 // Botni ishga tushirish
 bot.launch();
+
+function onError(error) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    let bind = 'Port ' + port;
+
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+const shutdown = async (val) => {
+    console.log('Shutting down gracefully...');
+
+    try {
+        await bot.stop(val);
+        process.exit(0);
+    } catch (error) {
+        console.error('Error during shutdown:', error);
+        process.exit(1);
+    }
+};
+
+// Graceful shutdown
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+
+console.log('Bot is running...');
