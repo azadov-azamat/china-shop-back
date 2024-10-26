@@ -71,6 +71,7 @@ const shutdown = async (val) => {
     }
 };
 
+bot.launch();
 process.on('SIGINT', () => shutdown('SIGINT'));
 process.on('SIGTERM', () => shutdown('SIGTERM'));
 
