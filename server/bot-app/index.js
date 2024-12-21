@@ -17,9 +17,9 @@ const stage = new Scenes.Stage([destinationWizard]);
 const debug = require('debug')('bot');
 const error = require('debug')('bot:error');
 
-bot.use(session({ store }));
-bot.use(stage.middleware());
-bot.use(auth);
+// bot.use(session({ store }));
+// bot.use(stage.middleware());
+// bot.use(auth);
 
 bot.use(async (ctx, next) => {
   try {

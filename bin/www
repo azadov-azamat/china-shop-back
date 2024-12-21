@@ -6,7 +6,7 @@ const app = require('../app');
 const http = require('http');
 const debug = require('debug')('www');
 const server = http.createServer(app);
-const bot = require('../server/bot-app/index');
+// const bot = require('../server/bot-app/index');
 
 const port = process.env.PORT || 8080;
 
@@ -33,9 +33,9 @@ function onError(error) {
 
 server.listen(port, function () {
   if (process.env.NODE_ENV === 'production') {
-    bot.telegram.setWebhook(`${process.env.BACK_HOST_NAME}/api/webhook_telegram`);
+    // bot.telegram.setWebhook(`${process.env.BACK_HOST_NAME}/api/webhook_telegram`);
   } else {
-    bot.launch(); // Start polling after deleting the webhook
+    // bot.launch(); // Start polling after deleting the webhook
   }
 
   debug('Express server listening on port ' + server.address().port);
@@ -48,9 +48,9 @@ const shutdown = async (val) => {
   console.log('Shutting down gracefully...');
 
   try {
-    await bot.stop(val);
+    // await bot.stop(val);
     // Deregister the webhook to stop receiving updates
-    await bot.telegram.deleteWebhook();
+    // await bot.telegram.deleteWebhook();
 
     console.log('Webhook deregistered and bot shutdown gracefully.');
     server.close(() => {

@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Media extends Model {
-    static associate({ Product, User, Company }) {
+    static associate({ Product, User }) {
       Media.belongsTo(Product, { foreignKey: 'product_id', as: 'product', onDelete: 'CASCADE' });
       Media.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
     }
