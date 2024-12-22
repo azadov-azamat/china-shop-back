@@ -109,7 +109,7 @@ function relationTransform(record) {
     }
     let json = record.toJSON ? record.toJSON() : record;
 
-    let res = Object.keys(json).reduce((obj, key) => {
+    return Object.keys(json).reduce((obj, key) => {
         let isIncluded = key in RELATION_NAME_TRANSLATION;
         let isRelation = key.includes('_id');
         let value = json[key];
@@ -125,8 +125,6 @@ function relationTransform(record) {
         obj[camelize(key)] = value;
         return obj;
     }, {});
-
-    return res;
 }
 
 function typeForAttribute(attribute, record) {

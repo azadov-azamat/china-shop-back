@@ -13,10 +13,9 @@ const API_HASH = process.env.TELEGRAM_API_HASH;
 
 function telegramClient(session = '') {
   const stringSession = new StringSession(session); // fill this later with the value from
-  let client = new TelegramClient(stringSession, API_ID, API_HASH, {
-    connectionRetries: 5,
+    return new TelegramClient(stringSession, API_ID, API_HASH, {
+      connectionRetries: 5,
   });
-  return client;
 }
 
 async function sendAuthCode(client, phone) {

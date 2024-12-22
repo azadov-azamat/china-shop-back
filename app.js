@@ -13,10 +13,7 @@ morgan.format('custom', ':method :url :status :res[content-length] - :response-t
 
 const allowedOrigins = [
   'http://localhost:4200',
-  'http://localhost:8080',
-  'https://yukon.uz',
-  'https://logistics-backend.vercel.app',
-  'https://logistics-backend-uufl.onrender.com',
+  'http://localhost:8090'
 ];
 
 const corsOptions = function (req, callback) {
@@ -84,13 +81,13 @@ app.use(require('./server/routes'));
 app.use(errorHandler);
 
 app.get('/health', route(async (req, res) => {
-   const webhookInfo = await bot.telegram.getWebhookInfo();
-   // && webhookInfo.pending_update_count === 0
-   if (webhookInfo.url === 'https://logistics-backend-uufl.onrender.com/api/webhook_telegram') {
-     res.status(200).send('Bot and webhook are ready to receive traffic');
-   } else {
-     res.status(503).send('Webhook is not ready or there are pending updates');
-   }
+   // const webhookInfo = await bot.telegram.getWebhookInfo();
+   // // && webhookInfo.pending_update_count === 0
+   // if (webhookInfo.url === 'https://logistics-backend-uufl.onrender.com/api/webhook_telegram') {
+   //   res.status(200).send('Bot and webhook are ready to receive traffic');
+   // } else {
+   //   res.status(503).send('Webhook is not ready or there are pending updates');
+   // }
 }));
 
 module.exports = app;
