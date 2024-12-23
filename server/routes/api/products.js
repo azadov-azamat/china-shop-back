@@ -11,7 +11,6 @@ const ensureAuth = require("../../middleware/ensure-auth");
 
 router.get(
     '/',
-    ensureAuth(),
     route(async function (req, res) {
         const products = await Products.findAll();
         res.status(200).json(products);
@@ -20,7 +19,6 @@ router.get(
 
 router.get(
     '/:id',
-    ensureAuth(),
     route(async function (req, res) {
         const product = await Products.findByPk(req.params.id);
         if (!product) {
