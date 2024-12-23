@@ -35,7 +35,7 @@ server.listen(port, function () {
   if (process.env.NODE_ENV === 'production') {
     bot.telegram.setWebhook(`${process.env.BACK_HOST_NAME}/api/webhook_telegram`);
   } else {
-    // bot.launch(); // Start polling after deleting the webhook
+    bot.launch(); // Start polling after deleting the webhook
   }
 
   debug('Express server listening on port ' + server.address().port);
