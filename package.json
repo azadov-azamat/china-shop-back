@@ -23,6 +23,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "3.592.0",
+    "@aws-sdk/lib-storage": "^3.592.0",
+    "@aws-sdk/s3-request-presigner": "3.592.0",
     "@bekzod/sequelizeqp": "1.1.2",
     "@telegraf/entity": "^0.5.0",
     "axios": "1.7.7",

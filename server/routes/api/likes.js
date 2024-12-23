@@ -1,6 +1,6 @@
 const express = require('express');
 const route = require('express-async-handler');
-const { Like, Sequelize, Property } = require('../../../db/models/app');
+const { Like, Sequelize, Property } = require('../../../db/models');
 const { deserialize, serialize } = require('../../../db/serializers');
 const parseQps = require('../../utils/qps')();
 const ensureAuth = require('../../middleware/ensure-auth');
