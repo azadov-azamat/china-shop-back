@@ -12,7 +12,7 @@ const bot = require('./server/bot-app/index');
 morgan.format('custom', ':method :url :status :res[content-length] - :response-time ms');
 
 const allowedOrigins = [
-  'http://localhost:4200',
+  'http://localhost:5173',
   'http://localhost:8090',
   'https://china-shop-inky.vercel.app'
 ];
