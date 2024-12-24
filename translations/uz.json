@@ -48,14 +48,14 @@
 		"login": "Tizimga kirish",
 		"logout": "Tizimdan chiqish",
 		"loading": "...",
-		"agreement": "📜 Foydalanuvchi bitimi",
+		"agreement": "📜 Foydalanuvchi bitimi"
 	},
 	"warning": {
 		"invalid-query": "So‘rovingiz *noto'g'ri* ko'rinadi, iltimos, tuzatib qayta urinib ko'ring.",
 		"bot-access": "Botning kerakli kirish huquqlari yo'q",
 		"not-found-query": "Sizning so'rovingiz bo'yicha hech qanday yuk topilmadi",
 		"blocked-user": "Siz tizim tomonidan block langansiz! Block ni ochish uchun admin (@marina_laty) bilan bog'laning",
-		"agreement-not-accepted": "Foydalanuvchi bitimi qabul qilinmagan, qidiruvni boshlash uchun ✅ *Qabul qilish* tugmansini bosing",
+		"agreement-not-accepted": "Foydalanuvchi bitimi qabul qilinmagan, qidiruvni boshlash uchun ✅ *Qabul qilish* tugmansini bosing"
 	},
 	"text": {
 		"search": "🔍 Kerakli maʻlumotni topish uchun, ʻQidiruvʻ tugmasini bosing"
