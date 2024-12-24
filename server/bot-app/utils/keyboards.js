@@ -7,7 +7,7 @@ const i18n = require('../../../server/services/i18n-config');
 const { sequelize } = require('../../../db/models');
 
 const LANGUAGE = {
-  uz: '🇺🇿 O`zbekcha lotin',
+  uz: '🇺🇿 O`zbekcha',
   ru: '🇷🇺 Русский',
 };
 
@@ -59,50 +59,13 @@ const addLoad = ({ ctx }) => {
   ]).resize();
 };
 
-const addVehicle = ({ ctx }) => {
-  const locale = i18n.getLocale();
-  const { id } = ctx.from;
-  return Markup.keyboard([
-    [Markup.button.webApp(translate('commands.webapp-add-vehicle'), `${process.env.FRONT_HOST_NAME}/main/profile/vehicle/new?lang=${locale}&telegramId=${id}`)],
-    [translate('commands.go-back')]
-  ]).resize();
-};
-
 const main = ({ ctx }) => {
-  return Markup.keyboard([
-    [translate('commands.quick-search')],
-    // [Markup.button.locationRequest(translate('commands.search-nearby'))],
-    [translate('commands.my-ads')],
-    [translate('commands.add-new-ads')],
-    [translate('commands.settings')],
-    [translate('commands.help')],
-  ]).resize();
-};
-
-const selectLoadOrVehicle = () => {
-  return Markup.keyboard([
-    [translate('commands.my-loads')],
-    [translate('commands.my-vehicles')],
-    [translate('commands.go-back')],
-  ]).resize();
-};
-
-const searchTypes = () => {
-  return Markup.keyboard([
-    [translate('commands.load-search')],
-    [translate('commands.vehicle-search')],
-    [translate('commands.go-back')],
-  ]).resize();
-};
-
-const addNewAds = ({ ctx }) => {
   const locale = i18n.getLocale();
   const { id } = ctx.from;
 
   return Markup.keyboard([
-    [Markup.button.webApp(translate('commands.webapp-add-load'), `${process.env.FRONT_HOST_NAME}/main/profile/cargo/new?lang=${locale}&telegramId=${id}`)],
-    [Markup.button.webApp(translate('commands.webapp-add-vehicle'), `${process.env.FRONT_HOST_NAME}/main/profile/vehicle/new?lang=${locale}&telegramId=${id}`)],
-    [translate('commands.go-back')],
+    [Markup.button.webApp(translate('commands.open-store'), `${process.env.FRONT_HOST_NAME}?lang=${locale}&telegramId=${id}`)],
+    [translate('commands.get-comment'), translate('commands.settings')],
   ]).resize();
 };
 
@@ -110,90 +73,44 @@ const agreementAccept = () => {
   return Markup.keyboard([translate('accept-agreement')]).resize();
 };
 
-const getVehicleCountries = async () => {
-  const locale = i18n.getLocale();
-  const lang = (locale === 'uz' ? 'uz' : 'ru');
-
-  const results = await sequelize.query(`
-    SELECT DISTINCT c.country_id, cn.name_${lang}
-    FROM vehicles v
-    JOIN cities c ON v.origin_city_id = c.id
-    JOIN countries cn ON c.country_id = cn.id;
-  `, {
-    type: sequelize.QueryTypes.SELECT,
-    raw: true,
-  });
-
-  const buttons = results.map(result => [result[`name_` + lang]]);
-  buttons.push([translate('commands.go-back')]);
-
-  return Markup.keyboard([buttons]).resize();
-};
-
 const settings = () => {
   return Markup.keyboard([
-    // [translate('commands.set-filter')],
     [translate('commands.language')],
-    [translate('commands.subscriptions')],
+    [translate('commands.change-contact')],
+    [translate('commands.change-current-location')],
     [translate('commands.go-back')],
   ]).resize();
 };
 
-const subscriptions = () => {
+const contact = () => {
   return Markup.keyboard([
-    [translate('commands.active-subscriptions')],
-    [translate('commands.list-subscriptions')],
-    [translate('commands.go-back')],
-  ]).resize();
+    Markup.button.contactRequest(translate('send-contact')),
+  ]).resize().oneTime(false)
 };
 
-const filters = () =>
-  Markup.keyboard([
-    [translate('commands.change-filter')],
-    [translate('commands.unsubscribe')],
-    [translate('commands.go-back')],
-  ]).resize();
+const location = () => {
+  return Markup.keyboard([
+    Markup.button.locationRequest(translate('send-location')),
+  ]).resize().oneTime(false)
+};
 
 const buttonsWithBack = ({ buttons, inline = false }) => {
   buttons.push(inline ? translate('commands.go-back') : [translate('commands.go-back')]);
   return Markup.keyboard(buttons);
 };
 
-const changeDirection = ({ ctx }) => {
-  const filter = ctx.filter;
-  const truckType = filter?.cargoType;
-  const keyboard = [[translate('commands.change-direction')]];
-
-  if (truckType) {
-    const type = translate(`truck-type.${truckType}`);
-    keyboard.push([translate('change-current-truck-type', { type })]);
-  } else {
-    keyboard.push([translate('change-truck-type')]);
-  }
-
-  keyboard.push([translate('commands.go-back')]);
-
-  return Markup.keyboard(keyboard).resize();
-};
-
 const keyboardFuncs = {
   language,
   back,
   main,
-  filters,
+  contact,
+  location,
   buttonsWithBack,
   addLoad,
-  addVehicle,
   settings,
   languageWithoutBack,
   backWithType,
-  changeDirection,
-  getVehicleCountries,
-  searchTypes,
-  agreementAccept,
-  subscriptions,
-  selectLoadOrVehicle,
-  addNewAds,
+  agreementAccept
 };
 
 const keyboards = (name, opts = {}) => {

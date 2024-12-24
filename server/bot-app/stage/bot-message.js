@@ -1,6 +1,6 @@
 const {message} = require('telegraf/filters');
 const debug = require('debug')('search-bot:bot');
-const {User, sequelize} = require('../../../db/models');
+const {User, Comment, sequelize} = require('../../../db/models');
 const {translate} = require('../utils/translate');
 const {trackButton} = require('../utils/general');
 const {keyboards} = require('../utils/keyboards');
@@ -10,7 +10,7 @@ module.exports = function (bot) {
     bot.on('contact', async (ctx) => {
         const {id} = ctx.from;
         const contact = ctx.message.contact;
-        if (contact && !ctx.user.phone) {
+        if (contact && !ctx.user.phone || ctx.session.page === 'change-contact') {
             let user = await User.findOne({
                 where: {telegramId: id},
             });
@@ -34,27 +34,34 @@ module.exports = function (bot) {
     bot.on(message('text'), async (ctx) => {
         let question = ctx.message.text.trim().replace(/-/g, ' ');
         debug(`question: ${question}`);
-
         if (!ctx.user?.phone) {
             console.log('test-on-message-send-contact: ', ctx.user?.id)
             await ctx.reply(translate('error-contact'),
-                Markup.keyboard([
-                    Markup.button.contactRequest(translate('send-contact')),
-                ]).resize().oneTime(false),
+                keyboards('contact')
             );
-            return;
+        } else if (ctx.session.page === 'get-comment') {
+            await Comment.create({
+                text: question,
+                user_id: ctx.user.id,
+            })
+            await ctx.reply(translate('success-comment'), keyboards('main', {ctx}));
         }
-
-        await ctx.reply("To'g'irlayapmiz")
     });
 
     bot.on('location', async (ctx) => {
+        if (ctx.session.page === 'change-current-location') {
+            const {latitude, longitude} = ctx.message?.location;
+            let user = await User.findOne({where: {id: ctx.user.id}});
+            user.latlng = [latitude, longitude];
+            await user.save();
+            await ctx.reply(translate('success-location'), keyboards('settings'));
+        } else {
+            await ctx.reply(translate('welcome'), {
+                parse_mode: 'Markdown',
+                ...keyboards('main', {ctx}),
+            });
+        }
         ctx.session.page = 'location-search';
         trackButton(ctx, 'location-search');
-        await ctx.reply(translate('welcome'), {
-            parse_mode: 'Markdown',
-            ...keyboards('main', {ctx}),
-        });
-        // await ctx.scene.enter('destinationWizard', {filterId: ctx.filter.id});
     });
 };

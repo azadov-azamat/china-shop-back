@@ -1,32 +1,12 @@
 require('dotenv').config();
 const { Markup } = require('telegraf');
-const axios = require('axios');
-const dayjs = require('dayjs');
-const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
 const { capitalize } = require('lodash');
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 const { translate } = require('../utils/translate');
-const {
-  User,
-  Op,
-  ButtonTrack,
-  sequelize,
-  Sequelize,
-} = require('../../../db/models');
-const {
-  generateMessage,
-  escapeChar,
-  escapeCharBtn,
-  VEHICLE_MESSAGE_TEMPLATE,
-  DEFAULT_MESSAGE_TEMPLATE,
-} = require('../utils/generate-message');
-const { keyboards } = require('../utils/keyboards');
+const {ButtonTrack} = require('../../../db/models');
+
 const i18n = require('../../services/i18n-config');
 
-const LIMIT = 5;
 const DEFAULT_LANG = 'uz';
 
 const handleBotHearsCommand = (bot, phrase, handler) => {

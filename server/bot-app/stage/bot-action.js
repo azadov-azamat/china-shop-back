@@ -65,9 +65,7 @@ module.exports = function(bot) {
       ctx.session.page = 'share-contact';
       await ctx.reply(
           translate('request-contact'),
-          Markup.keyboard([
-            Markup.button.contactRequest(translate('send-contact')),
-          ]).resize().oneTime(false),
+          keyboards('contact')
       );
       trackButton(ctx, 'share-contact-agreement-inline-btn');
     }

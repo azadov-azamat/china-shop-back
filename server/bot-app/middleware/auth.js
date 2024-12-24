@@ -6,6 +6,7 @@ const { User, Op } = require('../../../db/models');
 const i18n = require('../../services/i18n-config');
 const { translate } = require('../utils/translate');
 const { trackButton } = require('../utils/general');
+const {keyboards} = require("../utils/keyboards");
 
 async function auth(ctx, next) {
   const { id, first_name, last_name, username } = ctx.from;
@@ -20,7 +21,8 @@ async function auth(ctx, next) {
         telegramId: id,
         firstName: first_name,
         lastName: last_name,
-        telegramUsername: username
+        telegramUsername: username,
+        role:  'user'
       },
     }),
   ]);
@@ -74,9 +76,7 @@ async function auth(ctx, next) {
     ctx.session.page = 'share-contact';
     await ctx.reply(
         translate('request-contact'),
-        Markup.keyboard([
-          Markup.button.contactRequest(translate('send-contact')),
-        ]).resize().oneTime(false)
+       keyboards('contact')
     );
     trackButton(ctx, 'share-contact-auth');
     return;

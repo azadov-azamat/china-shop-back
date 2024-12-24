@@ -23,6 +23,7 @@ module.exports = {
         allowNull: false,
         unique: true
       },
+      latlng: { type: Sequelize.GEOMETRY('POINT') },
       telegram_username: { type: Sequelize.STRING },
       selected_lang: { type: Sequelize.STRING },
       is_blocked: Sequelize.BOOLEAN,
