@@ -9,16 +9,13 @@ const { setCommands } = require('./utils/commands');
 const { keyboards, LANGUAGE } = require('./utils/keyboards');
 const { User } = require('../../db/models');
 const { trackButton } = require('./utils/general');
-const destinationWizard = require('./scenes/get-destination');
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 const store = new Redis();
-const stage = new Scenes.Stage([destinationWizard]);
 const debug = require('debug')('bot');
 const error = require('debug')('bot:error');
 
 bot.use(session({ store }));
-bot.use(stage.middleware());
 bot.use(auth);
 
 bot.use(async (ctx, next) => {
@@ -44,7 +41,7 @@ bot.use(async (ctx, next) => {
   }
 });
 
-// setCommands(bot);
+setCommands(bot);
 
 bot.start(async ctx => {
   if (ctx.chat.type !== 'private') {
@@ -85,26 +82,19 @@ bot.start(async ctx => {
   }
 });
 
-// bot.settings(async ctx => {
-//   await ctx.reply(translate('select-setting'), keyboards('settings'));
-// });
-//
-// bot.command('new_load', async ctx => {
-//   await ctx.reply(translate('commands.webapp-add-load'), keyboards('addLoad', { ctx }));
-// });
-//
-// bot.command('new_vehicle', async ctx => {
-//   await ctx.reply(translate('commands.webapp-add-vehicle'), keyboards('addVehicle', { ctx }));
-// });
-//
-// bot.help(async ctx => {
-//   await ctx.reply(translate('help'), { parse_mode: 'Markdown', disable_web_page_preview: true });
-//   trackButton(ctx, 'help');
-// });
+bot.settings(async ctx => {
+  await ctx.reply(translate('select-setting'), keyboards('settings'));
+  trackButton(ctx, 'settings');
+});
 
-// require('./stage/bot-hears')(bot);
-// require('./stage/bot-message')(bot);
-// require('./stage/bot-action')(bot);
+bot.help(async ctx => {
+  await ctx.reply(translate('help'), { parse_mode: 'Markdown', disable_web_page_preview: true });
+  trackButton(ctx, 'help');
+});
+
+require('./stage/bot-hears')(bot);
+require('./stage/bot-message')(bot);
+require('./stage/bot-action')(bot);
 
 // Global Error Handling
 bot.catch(async (err, ctx) => {
@@ -121,7 +111,7 @@ bot.catch(async (err, ctx) => {
     debug(`A generic error occurred: ${err.code}`);
   }
 
-  ctx.reply('Что-то пошло не так. Пожалуйста, попробуйте позже.');
+  await ctx.reply('Что-то пошло не так. Пожалуйста, попробуйте позже.');
 });
 
 process.on('unhandledRejection', err => {

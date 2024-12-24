@@ -8,35 +8,7 @@ const { sequelize } = require('../../../db/models');
 
 const LANGUAGE = {
   uz: '🇺🇿 O`zbekcha lotin',
-  'uz-Cyrl': '🇺🇿 Ўзбекча кирилл',
   ru: '🇷🇺 Русский',
-};
-
-const TRUCK_TYPES = [
-  'tented',
-  'reefer',
-  'small_isuzu',
-  'big_isuzu',
-  'chakman',
-  'kamaz',
-  'mega',
-  'flatbed',
-  'locomotive',
-  'lowboy',
-  'labo',
-  'dagruz',
-];
-
-const truckTypes = () => {
-  const paired = [];
-  for (let i = 0; i < TRUCK_TYPES.length; i += 2) {
-    paired.push(
-      TRUCK_TYPES.slice(i, i + 2).map(type => {
-        return type === 'dagruz' ? translate('dagruz') : translate(`truck-type.${type}`);
-      }),
-    );
-  }
-  return Markup.keyboard([[`${translate('truck-type.any')}`], ...paired, [translate('commands.go-back')]]).resize();
 };
 
 const backWithType = ({ ctx }) => {
@@ -214,7 +186,6 @@ const keyboardFuncs = {
   addVehicle,
   settings,
   languageWithoutBack,
-  truckTypes,
   backWithType,
   changeDirection,
   getVehicleCountries,
@@ -237,5 +208,4 @@ const keyboards = (name, opts = {}) => {
 module.exports = {
   keyboards,
   LANGUAGE,
-  TRUCK_TYPES,
 };

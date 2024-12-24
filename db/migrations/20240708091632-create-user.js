@@ -17,10 +17,12 @@ module.exports = {
       },
       phone: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
       },
-      telegram_id: { type: Sequelize.BIGINT },
+      telegram_id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        unique: true
+      },
       telegram_username: { type: Sequelize.STRING },
       selected_lang: { type: Sequelize.STRING },
       is_blocked: Sequelize.BOOLEAN,

@@ -4,7 +4,7 @@ const path = require('path');
 const localesPath = path.join(__dirname, '..', '..', 'translations');
 
 i18n.configure({
-  locales: ['uz', 'ru', 'uz-Cyrl'],
+  locales: ['uz', 'ru'],
   directory: localesPath,
   defaultLocale: 'uz',
   objectNotation: true,
