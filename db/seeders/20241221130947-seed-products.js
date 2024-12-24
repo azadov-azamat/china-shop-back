@@ -8,8 +8,8 @@ module.exports = {
         category: 'Hoodies',
         amount: 100,
         sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
         name: 'Leather Jacket',
@@ -18,8 +18,8 @@ module.exports = {
         category: 'Jackets',
         amount: 50,
         sizes: ['M', 'L', 'XL'],
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
         name: 'Printed Shirt',
@@ -28,8 +28,8 @@ module.exports = {
         category: 'Shirts',
         amount: 200,
         sizes: ['S', 'M', 'L'],
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     ]);
   },

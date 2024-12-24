@@ -18,7 +18,7 @@ router.get(
 
         const user = await User.findOne({where: {telegram_id: id}});
         if (!user) {
-            res.sendStatus(401);
+            return res.sendStatus(401);
         }
         res.send(getAuthToken(user.id));
     })
