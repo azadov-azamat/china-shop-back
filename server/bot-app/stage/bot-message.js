@@ -5,6 +5,7 @@ const {translate} = require('../utils/translate');
 const {trackButton} = require('../utils/general');
 const {keyboards} = require('../utils/keyboards');
 const {Markup} = require("telegraf");
+const {removeKeyboard} = require("telegraf/markup");
 
 module.exports = function (bot) {
     bot.on('contact', async (ctx) => {
@@ -16,9 +17,24 @@ module.exports = function (bot) {
             });
             user.phone = contact.phone_number;
             ctx.user = await user.save();
-            await ctx.reply(translate('success-contact'), {
-                ...keyboards('main', {ctx})
-            });
+            if (ctx.session.startPayload === 'from-site-user') {
+                let baseUrl = process.env.BACK_HOST_NAME
+                let authUrl = `${baseUrl}/api/auth/by-telegram?userId=${contact.user_id}`
+                ctx.session.startPayload = null;
+                await ctx.reply(translate('success-contact'), removeKeyboard());
+                await ctx.reply(translate('welcome'), {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [Markup.button.url(translate('enter-site'), authUrl)],
+                        ],
+                    }
+                });
+            } else {
+                await ctx.reply(translate('success-contact'), {
+                    ...keyboards('main', {ctx})
+                });
+            }
         } else if (!ctx.user.phone && !contact) {
             await ctx.reply(translate('error-contact'));
         } else {

@@ -13,6 +13,7 @@ morgan.format('custom', ':method :url :status :res[content-length] - :response-t
 
 const allowedOrigins = [
     'http://localhost:5173',
+    'http://localhost:5174',
     'http://localhost:8090',
     'https://china-shop-inky.vercel.app',
     'https://f312-2a05-45c2-101f-b800-bcd8-9e57-78cd-1dfb.ngrok-free.app'

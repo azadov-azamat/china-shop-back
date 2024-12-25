@@ -24,6 +24,19 @@ router.get(
     })
 );
 
+router.get(
+    '/by-telegram',
+    route(async function (req, res) {
+        const { userId } = req.query;
+        let user = await User.findOne({ where: { telegramId: userId }});
+
+        const getAuth = getAuthToken(user.id);
+
+        const frontendRedirectUrl = `${process.env.FRONT_ADMIN_HOST_NAME}/login?token=${getAuth.token}&userId=${getAuth.userId}&expires=${getAuth.expires}&telegramId=${user.telegramId}`;
+        return res.redirect(frontendRedirectUrl);
+    })
+);
+
 router.post(
     '/logout',
     route(async function (req, res) {

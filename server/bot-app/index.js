@@ -66,6 +66,15 @@ bot.start(async ctx => {
   if (ctx.user) {
     if (!ctx.user.selectedLang) {
       await ctx.reply(translate('select-language'), keyboards('languageWithoutBack'));
+    } else if (args === 'from-site-user') {
+      await ctx.reply(translate('welcome'), {
+        parse_mode: 'Markdown',
+        reply_markup: {
+          inline_keyboard: [
+            [Markup.button.url(translate('enter-site'), `${process.env.BACK_HOST_NAME}/api/auth/by-telegram?userId=${ctx.user.telegramId}`)],
+          ],
+        }
+      });
     } else {
       ctx.session.page = 'main';
       await ctx.reply(translate('welcome'), {

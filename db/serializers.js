@@ -14,6 +14,8 @@ const User = new Serializer('users', {
         'vehicleSearchLimit',
         'loadSearchLimit',
         'role',
+        'createdAt',
+        'updatedAt'
     ],
 
     searchFilters: {ref: 'id'},
@@ -60,6 +62,18 @@ const Like = new Serializer('likes', {
     },
 });
 
+const Comment = new Serializer('likes', {
+    attributes: ['rate', 'text', 'user', 'product', 'createdAt', 'updatedAt'],
+    property: {ref: 'id'},
+    typeForAttribute: typeForAttribute,
+    transform: relationTransform,
+    meta: {
+        pagination(records) {
+            return records.pagination;
+        },
+    },
+});
+
 const Media = new Serializer('media', {
     attributes: [
         'mediaType',
@@ -68,9 +82,7 @@ const Media = new Serializer('media', {
         'property',
         'user',
         'contentType',
-        'company',
         'watermarkPath',
-        'order',
         'createdAt',
         'updatedAt',
     ],
@@ -135,7 +147,8 @@ const serializers = {
     User,
     Like,
     Media,
-    Product
+    Product,
+    Comment
 };
 
 function deserialize(models) {
