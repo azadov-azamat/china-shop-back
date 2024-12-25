@@ -45,7 +45,7 @@ router.post(
     route(async function (req, res) {
         const {name, description, price, category, amount, sizes} = req.body;
         const newProduct = await Product.create({name, description, price, category, amount, sizes});
-        res.status(201).json(newProduct);
+        res.status(serialize(newProduct));
     })
 )
 
