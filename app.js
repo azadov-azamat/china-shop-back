@@ -16,7 +16,7 @@ const allowedOrigins = [
     'http://localhost:5174',
     'http://localhost:8090',
     'https://china-shop-inky.vercel.app',
-    'https://f312-2a05-45c2-101f-b800-bcd8-9e57-78cd-1dfb.ngrok-free.app'
+    'https://db65-2a05-45c2-101f-b800-5d46-871a-85ca-d6e4.ngrok-free.app'
 ];
 
 const corsOptions = function (req, callback) {

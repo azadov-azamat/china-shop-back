@@ -5,7 +5,7 @@ const {
     Product,
     sequelize,
     Sequelize,
-    Op, Like,
+    Op, Like, Media
 } = require('../../../db/models');
 const ensureAuth = require("../../middleware/ensure-auth");
 const {serialize} = require("../../../db/serializers");
@@ -20,9 +20,13 @@ router.get(
             {
                 model: Like,
                 as: 'like',
+            },
+            {
+                model: Media,
+                as: 'media',
             }
         ];
-        const { rows, count } = await Product.findAndCountAll(query);
+        const {rows, count} = await Product.findAndCountAll(query);
         rows.pagination = pagination(query.limit, query.offset, count);
         res.send(serialize(rows));
     })
@@ -31,11 +35,25 @@ router.get(
 router.get(
     '/:id',
     route(async function (req, res) {
-        const product = await Product.findByPk(req.params.id);
+        const product = await Product.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [
+                {
+                    model: Like,
+                    as: 'like',
+                },
+                {
+                    model: Media,
+                    as: 'media',
+                }
+            ]
+        });
         if (!product) {
             return res.status(404).json({error: 'Products not found'});
         }
-        res.status(200).json(product);
+        res.send(serialize(product));
     })
 );
 
