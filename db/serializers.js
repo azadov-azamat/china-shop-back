@@ -38,6 +38,7 @@ const Product = new Serializer('products', {
         'amount',
         'sizes',
         'media',
+        'like',
         'createdAt',
         'updatedAt'
     ],
@@ -52,7 +53,7 @@ const Product = new Serializer('products', {
 });
 
 const Like = new Serializer('likes', {
-    attributes: ['liked', 'property', 'createdAt', 'updatedAt'],
+    attributes: ['liked', 'product', 'createdAt', 'updatedAt'],
     property: {ref: 'id'},
     typeForAttribute: typeForAttribute,
     transform: relationTransform,
@@ -63,8 +64,20 @@ const Like = new Serializer('likes', {
     },
 });
 
-const Comment = new Serializer('likes', {
+const Comment = new Serializer('comments', {
     attributes: ['rate', 'text', 'user', 'product', 'createdAt', 'updatedAt'],
+    property: {ref: 'id'},
+    typeForAttribute: typeForAttribute,
+    transform: relationTransform,
+    meta: {
+        pagination(records) {
+            return records.pagination;
+        },
+    },
+});
+
+const Bucket = new Serializer('buckets', {
+    attributes: ['count', 'size', 'user', 'product', 'createdAt', 'updatedAt'],
     property: {ref: 'id'},
     typeForAttribute: typeForAttribute,
     transform: relationTransform,
@@ -149,7 +162,8 @@ const serializers = {
     Like,
     Media,
     Product,
-    Comment
+    Comment,
+    Bucket
 };
 
 function deserialize(models) {
