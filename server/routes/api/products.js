@@ -14,6 +14,7 @@ const parsQps = require('../../utils/qps')();
 
 router.get(
     '/',
+    ensureAuth(),
     route(async function (req, res) {
         const query = parsQps(req.query);
         query.include = [
@@ -34,6 +35,7 @@ router.get(
 
 router.get(
     '/:id',
+    ensureAuth(),
     route(async function (req, res) {
         const product = await Product.findOne({
             where: {
@@ -63,21 +65,20 @@ router.post(
     route(async function (req, res) {
         const {name, description, price, category, amount, sizes} = req.body;
         const newProduct = await Product.create({name, description, price, category, amount, sizes});
-        res.status(serialize(newProduct));
+        res.send(serialize(newProduct));
     })
 )
 
-router.put(
+router.patch(
     '/:id',
     ensureAuth(),
     route(async function (req, res) {
-        const {name, description, price, category, amount, sizes} = req.body;
+        const json = req.body;
         const product = await Product.findByPk(req.params.id);
         if (!product) {
             return res.status(404).json({error: 'Products not found'});
         }
-        await product.update({name, description, price, category, amount, sizes});
-        res.status(200).json(product);
+        res.send(serialize(await product.update(json)));
     })
 );
 

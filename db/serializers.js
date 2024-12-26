@@ -37,6 +37,7 @@ const Product = new Serializer('products', {
         'category',
         'amount',
         'sizes',
+        'media',
         'createdAt',
         'updatedAt'
     ],

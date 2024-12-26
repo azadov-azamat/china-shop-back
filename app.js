@@ -14,9 +14,9 @@ morgan.format('custom', ':method :url :status :res[content-length] - :response-t
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
-    'http://localhost:8090',
+    'http://localhost:8080',
+    'https://china-shop-admin.vercel.app',
     'https://china-shop-inky.vercel.app',
-    'https://db65-2a05-45c2-101f-b800-5d46-871a-85ca-d6e4.ngrok-free.app'
 ];
 
 const corsOptions = function (req, callback) {

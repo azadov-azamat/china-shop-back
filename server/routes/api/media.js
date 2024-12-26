@@ -14,12 +14,12 @@ router.post(
     '/',
     ensureAuth(),
     route(async function (req, res) {
-        let json = await deserialize(req.body);
-        let {relationships} = req.body.data;
-        let product = null;
+        let json = req.body;
 
-        let productId = relationships.product?.data.id || null;
-        let userId = relationships.user?.data.id || null;
+        let {user, product} = json;
+
+        let productId = product?.id || null;
+        let userId = user?.id || null;
 
         let mediaCount = await Media.count({
             where: {product_id: productId, user_id: userId},
@@ -32,7 +32,7 @@ router.post(
         } else if (json.contentType) {
             await Media.destroy({
                 where: {
-                    company_id: companyId,
+                    user_id: userId,
                     content_type: json.contentType,
                 },
             });
@@ -48,7 +48,7 @@ router.post(
         }
 
         if (productId) {
-            product = await Product.findOne({where: {id: productId, owner_id: req.user.id}});
+            product = await Product.findOne({where: {id: productId}});
             if (!product) {
                 return res.sendStatus(401);
             }
@@ -109,7 +109,7 @@ router.get(
             return res.sendStatus(401);
         }
 
-        let product = Product.findOne({where: {id, owner_id: req.user.id}});
+        let product = Product.findOne({where: {id}});
         if (!product) {
             return res.sendStatus(401);
         }

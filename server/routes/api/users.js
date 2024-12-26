@@ -29,6 +29,7 @@ router.get(
 
 router.patch(
   '/:id',
+    ensureAuth(),
   route(async function(req, res) {
     const { id } = req.params;
 
